@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FruitSA.Application\FruitSA.Application.csproj" />
     <ProjectReference Include="..\FruitSA.Domain\FruitSA.Domain.csproj" />
   </ItemGroup>
 

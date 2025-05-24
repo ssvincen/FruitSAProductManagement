@@ -31,7 +31,7 @@ namespace FruitSA.Domain.Entities
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
         [Timestamp]
-        public byte[] RowVersion { get; set; }
+        public byte[] RowVersion { get; set; } = new byte[8];
     }
 }
 

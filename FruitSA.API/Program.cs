@@ -6,6 +6,7 @@ using FruitSA.Application;
 using FruitSA.Application.Interfaces;
 using FruitSA.Domain.Helper;
 using FruitSA.Infrastructure.Data;
+using FruitSA.Infrastructure.Repositories;
 using FruitSA.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -92,6 +93,8 @@ public class Program
         // 🔧 Application Services
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IEmailSender, EmailService>();
+        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
         builder.Services.AddTransient<DatabaseSeeder>();
 
