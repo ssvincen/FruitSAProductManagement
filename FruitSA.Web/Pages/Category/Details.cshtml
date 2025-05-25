@@ -1,0 +1,34 @@
+﻿@page
+@model FruitSA.Web.Pages.Category.DetailsModel
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container">
+    <h1>Category Details</h1>
+
+    <dl class="row">
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.Category.Name</dd>
+
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Category.Description</dd>
+
+        <dt class="col-sm-2">Category Code</dt>
+        <dd class="col-sm-10">@Model.Category.CategoryCode</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@(Model.Category.IsActive ? "Active" : "Inactive")</dd>
+
+        <dt class="col-sm-2">Created By</dt>
+        <dd class="col-sm-10">@Model.Category.CreatedBy</dd>
+
+        <dt class="col-sm-2">Created Date</dt>
+        <dd class="col-sm-10">@Model.Category.CreatedDate.ToString("MM/dd/yyyy")</dd>
+    </dl>
+
+    <div class="form-group mb-3">
+        <a asp-page="./Edit" asp-route-id="@Model.Category.CategoryId" class="btn btn-primary">Edit</a>
+        <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

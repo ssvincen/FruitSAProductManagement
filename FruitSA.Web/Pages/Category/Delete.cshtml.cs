@@ -1,0 +1,39 @@
+using FruitSA.Application.Shared.Category;
+using FruitSA.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FruitSA.Web.Pages.Category
+{
+    public class DeleteModel(ApiService apiService) : SecurePageModel
+    {
+        private readonly ApiService _apiService = apiService;
+
+
+        [BindProperty]
+        public CategoryViewModel Category { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int id)
+        {
+            var category = await _apiService.GetAsync<CategoryViewModel>($"api/Category/{id}");
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            Category = category;
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int id)
+        {
+            var response = await _apiService.DeleteAsync<ApiResponse>($"api/Category/{id}");
+            if (response.Success)
+            {
+                return RedirectToPage("./Index");
+            }
+
+            ModelState.AddModelError(string.Empty, "Failed to delete category.");
+            return Page();
+        }
+    }
+}

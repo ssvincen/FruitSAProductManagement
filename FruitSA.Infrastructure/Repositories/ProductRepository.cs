@@ -152,11 +152,14 @@ namespace FruitSA.Infrastructure.Repositories
             return new ProductViewModel
             {
                 ProductId = product.ProductId,
+                CategoryId = product.CategoryId,
                 ProductCode = product.ProductCode,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                CategoryName = product.Category.Name
+                CategoryName = product.Category.Name,
+                CreatedBy = product.CreatedBy,
+                CreatedDate = product.CreatedDate,
             };
         }
 

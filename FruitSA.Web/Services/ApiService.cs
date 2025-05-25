@@ -23,7 +23,7 @@ namespace FruitSA.Web.Services
             return responseContent;
         }
 
-        public async Task<T> GetAsync<T>(string relativeUrl, bool withAuth = false)
+        public async Task<T> GetAsync<T>(string relativeUrl, bool withAuth = true)
         {
             ApplyJwtIfRequired(withAuth);
 
@@ -32,7 +32,7 @@ namespace FruitSA.Web.Services
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
-        public async Task<T> DeleteAsync<T>(string relativeUrl, bool withAuth = false)
+        public async Task<T> DeleteAsync<T>(string relativeUrl, bool withAuth = true)
         {
             ApplyJwtIfRequired(withAuth);
 
@@ -41,7 +41,7 @@ namespace FruitSA.Web.Services
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
-        public async Task<T> PutAsync<T>(string relativeUrl, object data, bool withAuth = false)
+        public async Task<T> PutAsync<T>(string relativeUrl, object data, bool withAuth = true)
         {
             ApplyJwtIfRequired(withAuth);
             var response = await _httpClient.PutAsJsonAsync(BuildUrl(relativeUrl), data);
@@ -49,7 +49,25 @@ namespace FruitSA.Web.Services
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
-        public async Task<T> PatchAsync<T>(string relativeUrl, object data, bool withAuth = false)
+
+        public async Task<T> PostMultipartAsync<T>(string relativeUrl, MultipartFormDataContent content, bool withAuth = true)
+        {
+            ApplyJwtIfRequired(withAuth);
+
+            var url = BuildUrl(relativeUrl);
+            var response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Upload failed: {response.StatusCode} - {error}");
+            }
+
+            return await response.Content.ReadFromJsonAsync<T>();
+        }
+
+
+        public async Task<T> PatchAsync<T>(string relativeUrl, object data, bool withAuth = true)
         {
             ApplyJwtIfRequired(withAuth);
             var response = await _httpClient.PatchAsJsonAsync(BuildUrl(relativeUrl), data);

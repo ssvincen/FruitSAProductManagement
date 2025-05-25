@@ -31,16 +31,16 @@ namespace FruitSA.API.Controllers
         }
 
 
-        [HttpGet("Categories/Paged")]
+        [HttpGet("Paged")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCategoriesByPagination([FromQuery] PageModel pageModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetCategoriesByPagination([FromQuery] PaginationModel pagination, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetAllCategoriesByPaginationQuery(pageModel), cancellationToken);
+            var result = await _mediator.Send(new GetAllCategoriesByPaginationQuery(pagination), cancellationToken);
             return Ok(result);
         }
 
 
-        [HttpPost("Category")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequest request, CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ namespace FruitSA.API.Controllers
         }
 
 
-        [HttpGet("Categories")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
         {
@@ -71,7 +71,7 @@ namespace FruitSA.API.Controllers
         }
 
 
-        [HttpGet("Category/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCategoryById(int id, CancellationToken cancellationToken)
@@ -84,7 +84,7 @@ namespace FruitSA.API.Controllers
 
 
 
-        [HttpPut("Category")]
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCategory([FromBody] CategoryViewModel request, CancellationToken cancellationToken)
@@ -103,12 +103,12 @@ namespace FruitSA.API.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            return Ok(result.Message);
+            return Ok(result);
         }
 
 
 
-        [HttpDelete("Categories/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteCategory(int id, CancellationToken cancellationToken)
@@ -120,7 +120,7 @@ namespace FruitSA.API.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            return Ok(result.Message);
+            return Ok(result);
         }
 
 

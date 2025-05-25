@@ -5,9 +5,9 @@ using MediatR;
 
 namespace FruitSA.Application.Products.Queries.GetAllProductsByPagination
 {
-    public class GetAllProductsByPaginationQuery(PageModel pageModel) : IRequest<PagedResult<ProductViewModel>>
+    public class GetAllProductsByPaginationQuery(PaginationModel pagination) : IRequest<PagedResult<ProductViewModel>>
     {
-        public int PageNumber { get; set; } = pageModel.PageNumber;
-        public int PageSize { get; set; } = pageModel.PageSize;
+        public int PageNumber { get; set; } = pagination.PageNumber;
+        public int PageSize { get; set; } = pagination.PageSize;
     }
 }
