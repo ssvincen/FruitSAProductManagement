@@ -18,6 +18,7 @@ namespace FruitSA.Infrastructure.Services
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, identityUser.Id),
+                new(ClaimTypes.Name, identityUser.UserName),
                 new(ClaimTypes.Email, identityUser.Email)
             };
 

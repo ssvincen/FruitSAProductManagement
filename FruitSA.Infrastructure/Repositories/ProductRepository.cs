@@ -71,7 +71,7 @@ namespace FruitSA.Infrastructure.Repositories
                     .Include(p => p.Category)
                     .FirstOrDefaultAsync(p => p.ProductId == product.ProductId, cancellationToken);
 
-                return Result<ProductViewModel>.Ok(MapToViewModel(product), "Product added successfully.");
+                return Result<ProductViewModel>.Ok(MapToViewModel(createdProduct), "Product added successfully.");
             }
             catch (DbUpdateException dbEx)
             {
@@ -105,11 +105,10 @@ namespace FruitSA.Infrastructure.Repositories
                 await _context.SaveChangesAsync(cancellationToken);
 
                 // Reload updated product with Category
-                var updatedProduct = await _context.Products
-                    .Include(p => p.Category)
+                var updatedProduct = await _context.Products.Include(p => p.Category)
                     .FirstOrDefaultAsync(p => p.ProductId == existing.ProductId, cancellationToken);
 
-                return Result<ProductViewModel>.Ok(MapToViewModel(product), "Product updated successfully.");
+                return Result<ProductViewModel>.Ok(MapToViewModel(updatedProduct), "Product updated successfully.");
             }
             catch (DbUpdateException dbEx)
             {
@@ -123,7 +122,7 @@ namespace FruitSA.Infrastructure.Repositories
             }
         }
 
-        public async Task<Result<bool>> DeleteProductAsync(int id, CancellationToken cancellationToken)
+        public async Task<Result<bool>> DeleteProductByIdAsync(int id, CancellationToken cancellationToken)
         {
             try
             {

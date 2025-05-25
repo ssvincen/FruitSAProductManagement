@@ -19,6 +19,17 @@ namespace FruitSA.Application.Account.Commands.Login
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
                 throw new UnauthorizedAccessException("Invalid credentials");
 
+            if (await _userManager.IsLockedOutAsync(user))
+                throw new UnauthorizedAccessException("Account is locked. Try again later.");
+
+            if (!await _userManager.CheckPasswordAsync(user, request.Password))
+            {
+                await _userManager.AccessFailedAsync(user);
+                throw new UnauthorizedAccessException("Invalid credentials");
+            }
+
+            await _userManager.ResetAccessFailedCountAsync(user);
+
             var roles = await _userManager.GetRolesAsync(user);
             var token = _jwtService.GenerateToken(user, roles);
 

@@ -55,7 +55,6 @@ namespace FruitSA.Infrastructure.Repositories
             return response;
         }
 
-
         public async Task<Result<CategoryViewModel>> GetCategoryByIdAsync(int id, CancellationToken cancellationToken)
         {
             try
@@ -129,7 +128,7 @@ namespace FruitSA.Infrastructure.Repositories
             }
         }
 
-        public async Task<Result<bool>> DeleteCategoryAsync(int id, CancellationToken cancellationToken)
+        public async Task<Result<bool>> DeleteCategoryByIdAsync(int id, CancellationToken cancellationToken)
         {
             try
             {

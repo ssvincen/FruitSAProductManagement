@@ -55,6 +55,6 @@ namespace FruitSA.Application.Interfaces
         /// <param name="id">The category ID.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>True if deleted, false if not found or has associated products.</returns>
-        Task<Result<bool>> DeleteCategoryAsync(int id, CancellationToken cancellationToken);
+        Task<Result<bool>> DeleteCategoryByIdAsync(int id, CancellationToken cancellationToken);
     }
 }

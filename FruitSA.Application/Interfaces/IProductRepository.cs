@@ -47,6 +47,6 @@ namespace FruitSA.Application.Interfaces
         /// <param name="id">The product ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the delete operation.</returns>
-        Task<Result<bool>> DeleteProductAsync(int id, CancellationToken cancellationToken);
+        Task<Result<bool>> DeleteProductByIdAsync(int id, CancellationToken cancellationToken);
     }
 }

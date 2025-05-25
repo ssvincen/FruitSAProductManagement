@@ -8,3 +8,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>")]
+[assembly: SuppressMessage("Usage", "ASP0018:Unused route parameter", Justification = "<Pending>")]
