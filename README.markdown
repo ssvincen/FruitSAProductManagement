@@ -54,13 +54,12 @@ For detailed step-by-step instructions to clone, configure, and run the applicat
 ## Repository Structure
 
 - `docs/`: Documentation, including How-To Guide, Technical Document, UML diagrams, and ERD.
-- `FruitSA.API/`: API layer with RESTful endpoints and CQRS implementation.
-- `FruitSA.Application/`: Application layer (business logic).
+- `FruitSA.API/`: API layer with RESTful endpoints.
+- `FruitSA.Application/`: Application layer (business logic)  and CQRS implementation.
 - `FruitSA.Domain/`: Domain models and business rules.
 - `FruitSA.Infrastructure/`: Data access, migrations, logging, and email services.
 - `FruitSA.UnitTest/`: Unit tests for validation and business logic.
 - `FruitSA.Web/`: Web interface using ASP.NET Core MVC.
-- `GitHub Actions/`: CI/CD workflows (if applicable).
 
 ## Support
 
