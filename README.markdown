@@ -24,8 +24,6 @@ To set up and run the project locally, ensure you have the following installed:
 
 ## Setup Instructions
 
-For detailed step-by-step instructions to clone, configure, and run the application, refer to the [How-To Guide](docs/HowToGuide.md).(Doc/TechnicalDocument)
-
 ### Quick Start
 1. Clone the repository:
    ```bash
