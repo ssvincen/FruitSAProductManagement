@@ -24,8 +24,6 @@ To set up and run the project locally, ensure you have the following installed:
 
 ## Setup Instructions
 
-For detailed step-by-step instructions to clone, configure, and run the application, refer to the [How-To Guide](docs/HowToGuide.md).(Doc/TechnicalDocument)
-
 ### Quick Start
 1. Clone the repository:
    ```bash
@@ -36,7 +34,7 @@ For detailed step-by-step instructions to clone, configure, and run the applicat
    ```bash
    dotnet restore
    ```
-3. Configure the database (see [How-To Guide](docs/HowToGuide.md) for details).
+3. Configure the database (see [Software Technical Document](FruitSA.API/Docs/TechnicalDocument.markdown)) for details).
 4. Build and run the Solution:
    ```bash
    cd FruitSA.Solution
@@ -47,10 +45,9 @@ For detailed step-by-step instructions to clone, configure, and run the applicat
 
 ## Documentation
 
-- **Technical Details**: For system architecture, design patterns, database schema, and implementation details, see the [Software Technical Document](docs/TechnicalDocument.md).
+- **Technical Details**: For system architecture, design patterns, database schema, and implementation details, see the [Software Technical Document](FruitSA.API/Docs/TechnicalDocument.markdown).
 - **UML Diagrams and ERD**: Available in `docs/UML/` and `docs/ERD.png` for class, use case, sequence diagrams, and entity relationships.
-- **Setup Guide**: The [How-To Guide](docs/HowToGuide.md) provides detailed instructions for setting up and using the application.
-
+  
 ## Repository Structure
 
 - `docs/`: Documentation, including How-To Guide, Technical Document, UML diagrams, and ERD.
