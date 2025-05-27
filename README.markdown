@@ -47,7 +47,7 @@ For detailed step-by-step instructions to clone, configure, and run the applicat
 
 ## Documentation
 
-- **Technical Details**: For system architecture, design patterns, database schema, and implementation details, see the [Software Technical Document](docs/TechnicalDocument.md).
+- **Technical Details**: For system architecture, design patterns, database schema, and implementation details, see the [Software Technical Document](FruitSA.API/Docs/TechnicalDocument.markdown).
 - **UML Diagrams and ERD**: Available in `docs/UML/` and `docs/ERD.png` for class, use case, sequence diagrams, and entity relationships.
 - **Setup Guide**: The [How-To Guide](docs/HowToGuide.md) provides detailed instructions for setting up and using the application.
 
