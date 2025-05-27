@@ -34,7 +34,7 @@ To set up and run the project locally, ensure you have the following installed:
    ```bash
    dotnet restore
    ```
-3. Configure the database (see [Software Technical Document](docs/TechnicalDocument.md)) for details).
+3. Configure the database (see [Software Technical Document](FruitSA.API/Docs/TechnicalDocument.markdown)) for details).
 4. Build and run the Solution:
    ```bash
    cd FruitSA.Solution
@@ -45,7 +45,7 @@ To set up and run the project locally, ensure you have the following installed:
 
 ## Documentation
 
-- **Technical Details**: For system architecture, design patterns, database schema, and implementation details, see the [Software Technical Document](docs/TechnicalDocument.md).
+- **Technical Details**: For system architecture, design patterns, database schema, and implementation details, see the [Software Technical Document](FruitSA.API/Docs/TechnicalDocument.markdown).
 - **UML Diagrams and ERD**: Available in `docs/UML/` and `docs/ERD.png` for class, use case, sequence diagrams, and entity relationships.
   
 ## Repository Structure
