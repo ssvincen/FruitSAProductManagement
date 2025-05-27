@@ -9,12 +9,18 @@ namespace FruitSA.UnitTest.CategoryTests
 {
     public class AddCategoriesCommandHandlerTests
     {
+        private readonly Mock<ICategoryRepository> _mockRepository;
+
+        public AddCategoriesCommandHandlerTests()
+        {
+            _mockRepository = new Mock<ICategoryRepository>();
+        }
+
         [Fact]
         public async Task Handle_ShouldReturnSuccess_WhenCategoryIsAdded()
         {
             // Arrange
-            var mockRepository = new Mock<ICategoryRepository>();
-            var handler = new AddCategoryHandler(mockRepository.Object);
+            var handler = new AddCategoryHandler(_mockRepository.Object);
 
             var command = new AddCategoryCommand
             {
@@ -33,7 +39,7 @@ namespace FruitSA.UnitTest.CategoryTests
                 IsActive = true,
             };
 
-            mockRepository
+            _mockRepository
                 .Setup(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None))
                 .ReturnsAsync(Result<CategoryViewModel>.Ok(expectedCategory, "Category added successfully."));
 
@@ -45,15 +51,14 @@ namespace FruitSA.UnitTest.CategoryTests
             Assert.NotNull(result.Data);
             Assert.Equal("Fruits", result.Data.Name);
             Assert.Equal("FRU001", result.Data.CategoryCode);
-            mockRepository.Verify(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None), Times.Once);
+            _mockRepository.Verify(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None), Times.Once);
         }
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenRepositoryFails()
         {
             // Arrange
-            var mockRepository = new Mock<ICategoryRepository>();
-            var handler = new AddCategoryHandler(mockRepository.Object);
+            var handler = new AddCategoryHandler(_mockRepository.Object);
 
             var command = new AddCategoryCommand
             {
@@ -63,8 +68,7 @@ namespace FruitSA.UnitTest.CategoryTests
                 CreatedBy = "System"
             };
 
-            mockRepository
-                .Setup(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None))
+            _mockRepository.Setup(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None))
                 .ReturnsAsync(Result<CategoryViewModel>.Fail("A database error occurred while adding the category."));
 
             // Act
@@ -74,7 +78,7 @@ namespace FruitSA.UnitTest.CategoryTests
             Assert.False(result.Success);
             Assert.Null(result.Data);
             Assert.Equal("A database error occurred while adding the category.", result.Message);
-            mockRepository.Verify(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None), Times.Once);
+            _mockRepository.Verify(repo => repo.AddCategoryAsync(It.IsAny<Category>(), CancellationToken.None), Times.Once);
         }
     }
 }
