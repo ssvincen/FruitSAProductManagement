@@ -100,6 +100,7 @@ namespace FruitSA.Infrastructure.Repositories
                 existing.Description = product.Description;
                 existing.Price = product.Price;
                 existing.CategoryId = product.CategoryId;
+                existing.ImagePath = product.ImagePath;
 
                 _context.Products.Update(existing);
                 await _context.SaveChangesAsync(cancellationToken);
@@ -160,6 +161,7 @@ namespace FruitSA.Infrastructure.Repositories
                 CategoryName = product.Category.Name,
                 CreatedBy = product.CreatedBy,
                 CreatedDate = product.CreatedDate,
+                ImagePath = product.ImagePath
             };
         }
 

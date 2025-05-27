@@ -32,7 +32,7 @@ namespace FruitSA.Web.Pages.Category
             {
                 return RedirectToPage("./Index");
             }
-            ModelState.AddModelError(string.Empty, "Failed to update category.");
+            ModelState.AddModelError(string.Empty, response.Message);
             return Page();
         }
     }

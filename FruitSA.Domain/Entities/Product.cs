@@ -29,7 +29,6 @@ namespace FruitSA.Domain.Entities
         [Range(0.01, 999999.99)]
         public decimal Price { get; set; }
 
-        [StringLength(255)]
         public string? ImagePath { get; set; }
 
         [Required]

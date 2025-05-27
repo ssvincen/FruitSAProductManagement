@@ -11,10 +11,6 @@ namespace FruitSA.Web.Pages.Category
         [BindProperty]
         public AddCategoryRequest Category { get; set; }
 
-        public void OnGet()
-        {
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return Page();
@@ -28,7 +24,7 @@ namespace FruitSA.Web.Pages.Category
 
             var result = await _apiService.PostAsync<ApiResponse>("api/Category", request, true);
 
-            if (result.Success)
+            if (!result.Success)
             {
                 ModelState.AddModelError(string.Empty, result.Message);
                 return Page();

@@ -32,7 +32,7 @@ namespace FruitSA.Web.Pages.Account
                 return RedirectToPage("/Index");
             }
 
-            ModelState.AddModelError("", "Login failed");
+            ModelState.AddModelError("", response.Message ?? "Login failed. Please try again.");
             return Page();
         }
     }

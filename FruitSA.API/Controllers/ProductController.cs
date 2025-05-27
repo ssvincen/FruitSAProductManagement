@@ -43,7 +43,9 @@ namespace FruitSA.API.Controllers
                 Name = request.Name,
                 Description = request.Description,
                 CategoryId = request.CategoryId,
-                CreatedBy = _userManager.GetUserName(User)
+                CreatedBy = _userManager.GetUserName(User),
+                ImagePath = request.ImagePath,
+                Price = request.Price
             };
             var result = await _mediator.Send(addProductCommand, cancellationToken);
             if (!result.Success)
@@ -87,7 +89,8 @@ namespace FruitSA.API.Controllers
                 CategoryId = productViewModel.CategoryId,
                 Name = productViewModel.Name,
                 Description = productViewModel.Description,
-                Price = productViewModel.Price
+                Price = productViewModel.Price,
+                ImagePath = productViewModel.ImagePath
             };
             var result = await _mediator.Send(command, cancellationToken);
             if (!result.Success && result.Message == "Product not found.")

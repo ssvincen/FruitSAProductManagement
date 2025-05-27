@@ -128,16 +128,13 @@
             btn.classList.add('disabled');
             text.classList.add('d-none');
             spinner.classList.remove('d-none');
-
-            // Submit the form programmatically
             this.form.submit();
 
-            // Reset UI after upload (approximate)
             setTimeout(function () {
                 btn.classList.remove('disabled');
                 text.classList.remove('d-none');
                 spinner.classList.add('d-none');
-            }, 1000); // Adjusted for faster feedback
+            }, 1000)
         });
     </script>
 }

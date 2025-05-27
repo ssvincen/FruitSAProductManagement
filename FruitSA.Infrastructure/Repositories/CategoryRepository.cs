@@ -81,6 +81,14 @@ namespace FruitSA.Infrastructure.Repositories
 
             try
             {
+                // Check for duplicate CategoryCode (case-insensitive)
+                bool codeExists = await _context.Categories
+                    .AnyAsync(c => c.CategoryCode.ToUpper() == category.CategoryCode.ToUpper(), cancellationToken);
+
+                if (codeExists)
+                {
+                    return Result<CategoryViewModel>.Fail($"Category code '{category.CategoryCode}' already exists.");
+                }
                 await _context.Categories.AddAsync(category, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
@@ -105,6 +113,14 @@ namespace FruitSA.Infrastructure.Repositories
                 var existing = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryId == category.CategoryId, cancellationToken);
                 if (existing == null)
                     return Result<CategoryViewModel>.Fail("Category not found.");
+
+                bool codeExists = await _context.Categories.AnyAsync(c => c.CategoryId != category.CategoryId &&
+                                   c.CategoryCode.ToUpper() == category.CategoryCode.ToUpper(), cancellationToken);
+
+                if (codeExists)
+                {
+                    return Result<CategoryViewModel>.Fail($"Category code '{category.CategoryCode}' already exists.");
+                }
 
                 existing.Name = category.Name;
                 existing.CategoryCode = category.CategoryCode;

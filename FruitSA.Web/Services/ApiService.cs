@@ -1,6 +1,9 @@
 ﻿using FruitSA.Web.Helper;
+using FruitSA.Web.Models.Account;
 using Microsoft.Extensions.Options;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace FruitSA.Web.Services
 {
@@ -14,80 +17,124 @@ namespace FruitSA.Web.Services
         public async Task<T> PostAsync<T>(string relativeUrl, object data, bool withAuth = false)
         {
             ApplyJwtIfRequired(withAuth);
-
             var url = BuildUrl(relativeUrl);
             var response = await _httpClient.PostAsJsonAsync(url, data);
-            var errorContent = await response.Content.ReadAsStringAsync();
-            response.EnsureSuccessStatusCode();
-            var responseContent = await response.Content.ReadFromJsonAsync<T>();
-            return responseContent;
-        }
-
-        public async Task<T> GetAsync<T>(string relativeUrl, bool withAuth = true)
-        {
-            ApplyJwtIfRequired(withAuth);
-
-            var response = await _httpClient.GetAsync(BuildUrl(relativeUrl));
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<T>();
-        }
-
-        public async Task<T> DeleteAsync<T>(string relativeUrl, bool withAuth = true)
-        {
-            ApplyJwtIfRequired(withAuth);
-
-            var response = await _httpClient.DeleteAsync(BuildUrl(relativeUrl));
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<T>();
+            var deserializedResponse = await HandleResponseAsync<T>(response, url);
+            return deserializedResponse;
         }
 
         public async Task<T> PutAsync<T>(string relativeUrl, object data, bool withAuth = true)
         {
             ApplyJwtIfRequired(withAuth);
-            var response = await _httpClient.PutAsJsonAsync(BuildUrl(relativeUrl), data);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<T>();
+            var url = BuildUrl(relativeUrl);
+            var response = await _httpClient.PutAsJsonAsync(url, data);
+            var deserializedResponse = await HandleResponseAsync<T>(response, url);
+            return deserializedResponse;
         }
 
+        public async Task<T> DeleteAsync<T>(string relativeUrl, bool withAuth = true)
+        {
+            ApplyJwtIfRequired(withAuth);
+            var url = BuildUrl(relativeUrl);
+            var response = await _httpClient.DeleteAsync(url);
+            var deserializedResponse = await HandleResponseAsync<T>(response, url);
+            return deserializedResponse;
+        }
+
+        public async Task<T> GetAsync<T>(string relativeUrl, bool withAuth = true)
+        {
+            ApplyJwtIfRequired(withAuth);
+            var url = BuildUrl(relativeUrl);
+            var response = await _httpClient.GetAsync(url);
+            var deserializedResponse = await HandleResponseAsync<T>(response, url);
+            return deserializedResponse;
+        }
 
         public async Task<T> PostMultipartAsync<T>(string relativeUrl, MultipartFormDataContent content, bool withAuth = true)
         {
             ApplyJwtIfRequired(withAuth);
-
             var url = BuildUrl(relativeUrl);
             var response = await _httpClient.PostAsync(url, content);
+            var deserializedResponse = await HandleResponseAsync<T>(response, url);
+            return deserializedResponse;
+        }
 
-            if (!response.IsSuccessStatusCode)
+
+        private static async Task<T> HandleResponseAsync<T>(HttpResponseMessage response, string url)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
             {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"Upload failed: {response.StatusCode} - {error}");
+                PropertyNameCaseInsensitive = true
+            };
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonSerializer.Deserialize<T>(content, options);
+                if (result == null)
+                {
+                    throw new InvalidOperationException("The response content could not be deserialized.");
+                }
+
+                return result;
             }
 
-            return await response.Content.ReadFromJsonAsync<T>();
+            // Handle 401 Unauthorized
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                if (typeof(T) == typeof(JwtResponse))
+                {
+                    // Create a JwtResponse object even if failed, to return a consistent type
+                    var errorResponse = new JwtResponse
+                    {
+                        Success = false,
+                        Message = content,
+                        Token = null,
+                        Expiration = DateTime.MinValue
+                    };
+                    return (T)(object)errorResponse;
+                }
+                else if (typeof(T) == typeof(ApiResponse))
+                {
+                    return (T)(object)new ApiResponse
+                    {
+                        Success = false,
+                        Message = "Unauthorized access. Please login again."
+                    };
+                }
+            }
+
+            // Handle other API error responses and attempt to deserialize to T
+            try
+            {
+                var errorResult = JsonSerializer.Deserialize<T>(content, options);
+                if (errorResult != null)
+                {
+                    return errorResult;
+                }
+            }
+            catch
+            {
+                // Fallback to basic ApiResponse if deserialization fails
+            }
+
+            if (typeof(T) == typeof(ApiResponse))
+            {
+                return (T)(object)new ApiResponse
+                {
+                    Success = false,
+                    Message = content
+                };
+            }
+
+            throw new HttpRequestException($"Request to '{url}' failed with status code {(int)response.StatusCode}: {content}");
         }
 
 
-        public async Task<T> PatchAsync<T>(string relativeUrl, object data, bool withAuth = true)
-        {
-            ApplyJwtIfRequired(withAuth);
-            var response = await _httpClient.PatchAsJsonAsync(BuildUrl(relativeUrl), data);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<T>();
-        }
 
         public void StoreToken(string token)
         {
             _httpContextAccessor.HttpContext?.Session.SetString("JWToken", token);
-        }
-
-        public string GetToken()
-        {
-            return _httpContextAccessor.HttpContext?.Session.GetString("JWToken");
-        }
-
-        public void ClearToken()
-        {
-            _httpContextAccessor.HttpContext?.Session.Remove("JWToken");
         }
 
         private void ApplyJwtIfRequired(bool withAuth)
